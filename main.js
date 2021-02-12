@@ -109,7 +109,7 @@ class Calculator {
 }
 
 function updateDisplayVal(val){
-  document.getElementById("display").value = val;
+  document.getElementById("display").innerHTML = val;
 }
 
 const calc = new Calculator();
@@ -120,9 +120,9 @@ for(const btn of btnCollection){
   btn.addEventListener("click", () => {
     calc.loadValue(btn.value);
     if(calc.operator){
-      document.getElementById("display").value = calc.secondVal;
+      updateDisplayVal(calc.secondVal);
     } else {
-      document.getElementById("display").value = calc.firstVal;
+      updateDisplayVal(calc.firstVal);
     }
   })
 }
