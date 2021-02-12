@@ -71,7 +71,7 @@ class Calculator {
         this._value = Number(firstVal) + Number(secondVal);
         break;
       case SUBTRACT:
-        this._operator = SUBTRACT;
+        this._value = Number(firstVal) - Number(secondVal);
         break;
       case MULTIPLY:
         this._operator = MULTIPLY;
@@ -96,6 +96,10 @@ class Calculator {
   }
 }
 
+function updateDisplayVal(val){
+  document.getElementById('display').value = val;
+}
+
 const calc = new Calculator();
 
 // Loads all number buttons' values into tempVal
@@ -111,6 +115,7 @@ for(const btn of btnCollection){
   })
 }
 
+
 // Add button
 document.getElementById('add').addEventListener('click', () => {
   /* 
@@ -120,12 +125,15 @@ document.getElementById('add').addEventListener('click', () => {
   calc.operation = ADD;
   if(calc.secondVal === "") return;
   const newVal = calc.compute();
-  document.getElementById('display').value = newVal;
+  updateDisplayVal(newVal)
 })
 
 // Subtract button
 document.getElementById('subtract').addEventListener('click', () => {
-
+  calc.operation = SUBTRACT;
+  if(calc.secondVal === "") return;
+  const newVal = calc.compute();
+  updateDisplayVal(newVal);
 })
 
 // Multiply button
@@ -147,11 +155,11 @@ document.getElementById('divide').addEventListener('click', () => {
 // Equal button
 document.getElementById('equal').addEventListener('click', () => {
   const newVal = calc.compute();
-  document.getElementById('display').value = newVal;
+  updateDisplayVal(newVal);
 })
 
 // Reset button
 document.getElementById('reset').addEventListener('click', () => {
   calc.clear();
-  document.getElementById('display').value = 0;
+  updateDisplayVal(0);
 })
