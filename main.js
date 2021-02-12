@@ -109,7 +109,7 @@ class Calculator {
 }
 
 function updateDisplayVal(val){
-  document.getElementById("display").innerHTML = val;
+  document.getElementById("calculator_display").innerHTML = val;
 }
 
 const calc = new Calculator();
