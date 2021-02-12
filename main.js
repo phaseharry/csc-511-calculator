@@ -62,7 +62,7 @@ class Calculator {
 
   compute(){
     const { operator, firstVal, secondVal } = this;
-    if(secondVal === "" || operator === null) return this.value;
+    if(firstVal === "" || secondVal === "" || operator === null) return this.value;
     console.log(operator);
     console.log(firstVal);
     console.log(secondVal);
@@ -74,15 +74,14 @@ class Calculator {
         this._value = Number(firstVal) - Number(secondVal);
         break;
       case MULTIPLY:
-        this._operator = MULTIPLY;
+        this._value = Number(firstVal) * Number(secondVal);
         break;
       case DIVIDE:
-        this._operator = DIVIDE;
+        this._value = Number(firstVal) / Number(secondVal);
         break;
       default:
         this._operator = null;
     }
-    this.operation = null;
     this._secondVal = "";
     this._firstVal = this.value.toString();
     console.log(this._firstVal);
@@ -138,10 +137,11 @@ document.getElementById('subtract').addEventListener('click', () => {
 
 // Multiply button
 document.getElementById('multiply').addEventListener('click', () => {
-  if(calc.operator !== MULTIPLY){
-    calc.operation = MULTIPLY;
-    return;
-  }
+  if(calc.firstVal === "") return; 
+  calc.operation = MULTIPLY;
+  if(calc.secondVal === "") return;
+  const newVal = calc.compute();
+  updateDisplayVal(newVal);
 })
 
 // Divide button
@@ -155,6 +155,7 @@ document.getElementById('divide').addEventListener('click', () => {
 // Equal button
 document.getElementById('equal').addEventListener('click', () => {
   const newVal = calc.compute();
+  calc.operation = null;
   updateDisplayVal(newVal);
 })
 
