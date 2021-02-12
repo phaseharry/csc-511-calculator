@@ -60,24 +60,36 @@ class Calculator {
     }
   }
 
+  powerOfTwo(){
+    const { firstVal } = this;
+    this._value = Number(firstVal) ** 2;
+    this._firstVal = this._value;
+    return this.value;
+  }
+
   compute(){
     const { operator, firstVal, secondVal } = this;
     if(firstVal === "" || secondVal === "" || operator === null) return this.value;
     console.log(operator);
     console.log(firstVal);
     console.log(secondVal);
+    const firstNum = Number(firstVal), secondNum = Number(secondVal);
     switch(operator){
       case ADD:
-        this._value = Number(firstVal) + Number(secondVal);
+        this._value = firstNum + secondNum;
         break;
       case SUBTRACT:
-        this._value = Number(firstVal) - Number(secondVal);
+        this._value = firstNum - secondNum;
         break;
       case MULTIPLY:
-        this._value = Number(firstVal) * Number(secondVal);
+        this._value = firstNum * secondNum;
         break;
       case DIVIDE:
-        this._value = Number(firstVal) / Number(secondVal);
+        if(secondNum === 0){
+          this.clear();
+          return "DIVIDE BY ZERO ERROR";
+        }
+        this._value = firstNum / secondNum;
         break;
       default:
         this._operator = null;
@@ -92,11 +104,12 @@ class Calculator {
     this._value = this.initalVal;
     this._firstVal = "";
     this._secondVal = "";
+    this._operator = null;
   }
 }
 
 function updateDisplayVal(val){
-  document.getElementById('display').value = val;
+  document.getElementById("display").value = val;
 }
 
 const calc = new Calculator();
@@ -116,7 +129,7 @@ for(const btn of btnCollection){
 
 
 // Add button
-document.getElementById('add').addEventListener('click', () => {
+document.getElementById("add").addEventListener("click", () => {
   /* 
   if there was already a "secondVal" when add is clicked, then we just automatically 
   call compute. Else, we just end the function call there.
@@ -128,7 +141,7 @@ document.getElementById('add').addEventListener('click', () => {
 })
 
 // Subtract button
-document.getElementById('subtract').addEventListener('click', () => {
+document.getElementById("subtract").addEventListener("click", () => {
   calc.operation = SUBTRACT;
   if(calc.secondVal === "") return;
   const newVal = calc.compute();
@@ -136,7 +149,7 @@ document.getElementById('subtract').addEventListener('click', () => {
 })
 
 // Multiply button
-document.getElementById('multiply').addEventListener('click', () => {
+document.getElementById("multiply").addEventListener("click", () => {
   if(calc.firstVal === "") return; 
   calc.operation = MULTIPLY;
   if(calc.secondVal === "") return;
@@ -145,22 +158,30 @@ document.getElementById('multiply').addEventListener('click', () => {
 })
 
 // Divide button
-document.getElementById('divide').addEventListener('click', () => {
-  if(calc.operator !== DIVIDE){
-    calc.operation = DIVIDE;
-    return;
-  }
+document.getElementById("divide").addEventListener("click", () => {
+  if(calc.firstVal === "") return;
+  calc.operation = DIVIDE;
+  if(calc.secondVal === "") return;
+  const newVal = calc.compute();
+  updateDisplayVal(newVal);
 })
 
 // Equal button
-document.getElementById('equal').addEventListener('click', () => {
+document.getElementById("equal").addEventListener("click", () => {
   const newVal = calc.compute();
   calc.operation = null;
   updateDisplayVal(newVal);
 })
 
+// Power of Zwai
+document.getElementById("powerOfZwai").addEventListener("click", () => {
+  if(calc.firstVal === "") return;
+  const newVal = calc.powerOfTwo();
+  updateDisplayVal(newVal);
+})
+
 // Reset button
-document.getElementById('reset').addEventListener('click', () => {
+document.getElementById("reset").addEventListener("click", () => {
   calc.clear();
   updateDisplayVal(0);
 })
