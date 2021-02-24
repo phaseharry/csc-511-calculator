@@ -11,6 +11,81 @@ class Calculator {
 
   constructor(){
     this._value = this.initalVal;
+
+    function updateDisplayVal(val){
+      document.getElementById("calculator_display").innerHTML = val;
+    }
+  
+    // Loads all number buttons' values into tempVal
+    const btnCollection = document.getElementsByClassName("btn-num");
+    for(const btn of btnCollection){
+      btn.addEventListener("click", () => {
+        this.loadValue(btn.value);
+        if(this.operator){
+          updateDisplayVal(this.secondVal);
+        } else {
+          updateDisplayVal(this.firstVal);
+        }
+      })
+    }
+
+    // Add button
+    document.getElementById("add").addEventListener("click", () => {
+      /* 
+      if there was already a "secondVal" when add is clicked, then we just automatically 
+      call compute. Else, we just end the function call there.
+      */
+      this.operation = ADD;
+      if(this.secondVal === "") return;
+      const newVal = this.compute();
+      updateDisplayVal(newVal);
+    })
+
+    // Subtract button
+    document.getElementById("subtract").addEventListener("click", () => {
+      this.operation = SUBTRACT;
+      if(this.secondVal === "") return;
+      const newVal = this.compute();
+      updateDisplayVal(newVal);
+    })
+
+    // Multiply button
+    document.getElementById("multiply").addEventListener("click", () => {
+      if(this.firstVal === "") return; 
+      this.operation = MULTIPLY;
+      if(this.secondVal === "") return;
+      const newVal = this.compute();
+      updateDisplayVal(newVal);
+    })
+
+    // Divide button
+    document.getElementById("divide").addEventListener("click", () => {
+      if(this.firstVal === "") return;
+      this.operation = DIVIDE;
+      if(this.secondVal === "") return;
+      const newVal = this.compute();
+      updateDisplayVal(newVal);
+    })
+
+    // Equal button
+    document.getElementById("equal").addEventListener("click", () => {
+      const newVal = this.compute();
+      this.operation = null;
+      updateDisplayVal(newVal);
+    })
+
+    // Power of Zwai
+    document.getElementById("powerOfZwai").addEventListener("click", () => {
+      if(this.firstVal === "") return;
+      const newVal = this.powerOfTwo();
+      updateDisplayVal(newVal);
+    })
+
+    // Reset button
+    document.getElementById("reset").addEventListener("click", () => {
+      this.clear();
+      updateDisplayVal(0);
+    })
   }
 
   loadValue(digit){
@@ -108,80 +183,4 @@ class Calculator {
   }
 }
 
-function updateDisplayVal(val){
-  document.getElementById("calculator_display").innerHTML = val;
-}
-
 const calc = new Calculator();
-
-// Loads all number buttons' values into tempVal
-const btnCollection = document.getElementsByClassName("btn-num");
-for(const btn of btnCollection){
-  btn.addEventListener("click", () => {
-    calc.loadValue(btn.value);
-    if(calc.operator){
-      updateDisplayVal(calc.secondVal);
-    } else {
-      updateDisplayVal(calc.firstVal);
-    }
-  })
-}
-
-
-// Add button
-document.getElementById("add").addEventListener("click", () => {
-  /* 
-  if there was already a "secondVal" when add is clicked, then we just automatically 
-  call compute. Else, we just end the function call there.
-  */
-  calc.operation = ADD;
-  if(calc.secondVal === "") return;
-  const newVal = calc.compute();
-  updateDisplayVal(newVal)
-})
-
-// Subtract button
-document.getElementById("subtract").addEventListener("click", () => {
-  calc.operation = SUBTRACT;
-  if(calc.secondVal === "") return;
-  const newVal = calc.compute();
-  updateDisplayVal(newVal);
-})
-
-// Multiply button
-document.getElementById("multiply").addEventListener("click", () => {
-  if(calc.firstVal === "") return; 
-  calc.operation = MULTIPLY;
-  if(calc.secondVal === "") return;
-  const newVal = calc.compute();
-  updateDisplayVal(newVal);
-})
-
-// Divide button
-document.getElementById("divide").addEventListener("click", () => {
-  if(calc.firstVal === "") return;
-  calc.operation = DIVIDE;
-  if(calc.secondVal === "") return;
-  const newVal = calc.compute();
-  updateDisplayVal(newVal);
-})
-
-// Equal button
-document.getElementById("equal").addEventListener("click", () => {
-  const newVal = calc.compute();
-  calc.operation = null;
-  updateDisplayVal(newVal);
-})
-
-// Power of Zwai
-document.getElementById("powerOfZwai").addEventListener("click", () => {
-  if(calc.firstVal === "") return;
-  const newVal = calc.powerOfTwo();
-  updateDisplayVal(newVal);
-})
-
-// Reset button
-document.getElementById("reset").addEventListener("click", () => {
-  calc.clear();
-  updateDisplayVal(0);
-})
